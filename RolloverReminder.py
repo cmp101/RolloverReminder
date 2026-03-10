@@ -42,7 +42,7 @@ def calculate_auto_fnd(symbol, expiry_date):
 st.sidebar.header("⚙️ 持仓与修正设置")
 with st.sidebar.form("futures_master_form"):
     # 待监控的品种列表
-    raw_input = st.text_area("1. 监控品种 (逗号分隔)", "GC=F, CL=F, GF=F, LE=F")
+    raw_input = st.text_area("1. 监控品种 (逗号分隔)", "MNQ=F, GF=F, LE=F")
     
     st.sidebar.write("---")
     #st.sidebar.subheader("2. 批量手动修正 (可选)")
@@ -50,7 +50,7 @@ with st.sidebar.form("futures_master_form"):
     manual_input = st.text_area(
         "输入格式: 代码:日期 (逗号分隔)", 
         value="", 
-        placeholder="例如: GC=F:2026-03-25, CL=F:2026-03-22",
+        placeholder="例如: LE=F:2026-04-6, CL=F:2026-03-22",
         help="不填则使用系统预估"
     )
     
@@ -133,3 +133,4 @@ if submit_button:
 else:
 
     st.info("👈 请在左侧侧边栏输入持仓和修正信息。")
+
