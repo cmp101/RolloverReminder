@@ -45,7 +45,7 @@ with st.sidebar.form("futures_input_form"):
     raw_input = st.text_area("1. 监控品种 (逗号分隔)", value="MNQ=F, GF=F, LE=F")
     
     st.sidebar.write("---")
-    st.sidebar.subheader("2. 批量手动修正 (可选)")
+    #st.sidebar.subheader("2. 批量手动修正 (可选)")
     manual_input = st.text_area("格式: 代码:YYYY-MM-DD", value="LE=F:2026-04-06", placeholder="例如: GC=F:2026-03-25, LE=F:2026-04-06")
     
     submit_button = st.form_submit_button("确认并刷新数据")
@@ -75,22 +75,15 @@ if submit_button or raw_input:
                 specific_code = info.get('underlyingSymbol') or info.get('symbol') or sym
                 
                 # --- 年份纠偏逻辑 ---
-                expiry_ts = info.get('lastTradingDay') or info.get('expireDate')
                 expiry_date = None
-                
+                expiry_ts = info.get('lastTradingDay') or info.get('expireDate')
                 if expiry_ts:
-                    # 如果时间戳过大，转换单位
-                    if expiry_ts > 1e11: expiry_ts /= 1000
                     expiry_date = datetime.fromtimestamp(expiry_ts)
-                
-                # 关键修复：如果年份抓到了 2027，尝试用日历数据纠正回 2026 主力合约
-                if not expiry_date or expiry_date.year > 2026:
+                if not expiry_date:
                     try:
                         cal = ticker.calendar
-                        if cal is not None and not cal.empty:
-                            expiry_date = cal.iloc[0, 0]
-                    except:
-                        pass
+                        if not cal.empty: expiry_date = cal.iloc[0, 0]
+                    except: pass
 
                 if expiry_date:
                     if not isinstance(expiry_date, datetime):
@@ -127,6 +120,8 @@ if submit_button or raw_input:
                     st.error(f"❌ 无法抓取 {sym} 数据。")
         except Exception as e:
             st.error(f"查询 {sym} 出错")
+            st.error(f"查询 {sym} 出错")
+
 
 
 
