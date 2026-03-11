@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 
 # --- 1. 配置页面 ---
-st.set_page_config(page_title="RolloverReminder", page_icon="🛡️", layout="wide")
+st.set_page_config(page_title="期货 FND 全能监控", page_icon="🛡️", layout="wide")
 
 # --- 2. 品种结算属性词典 ---
 def get_contract_info(symbol):
@@ -49,8 +49,8 @@ with st.sidebar.form("futures_master_form"):
     # 允许输入多个品种的修正，格式为 代码:YYYY-MM-DD
     manual_input = st.text_area(
         "输入格式: 代码:日期 (逗号分隔)", 
-        value="", 
-        placeholder="例如: LE=F:2026-04-6, CL=F:2026-03-22",
+        value="LE=F:2026-04-06", 
+        placeholder="例如: LE=F:2026-04-06, CL=F:2026-03-22",
         help="不填则使用系统预估"
     )
     
@@ -69,7 +69,7 @@ if manual_input:
             st.sidebar.error(f"⚠️ 格式错误: {p} (请使用 YYYY-MM-DD)")
 
 # --- 6. 主界面内容 ---
-st.title("Rollover Reminder")
+st.title("Roller Reminder")
 
 if submit_button:
     symbols = [s.strip().upper() for s in raw_input.split(",") if s.strip()]
@@ -131,6 +131,6 @@ if submit_button:
         except Exception as e:
             st.error(f"查询 {sym} 出错")
 else:
-
     st.info("👈 请在左侧侧边栏输入持仓和修正信息。")
+
 
